@@ -49,128 +49,56 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+            public void onClickNumber(int number){
+                if(flag == false || negative == true){
 
+                    result.setText(result.getText() + Integer.toString(number));
+                }
+                else{
+                    result.setText(Integer.toString(number));
+                    flag = false;
+                }
+
+            }
 
 
 
             public void onClickZero(View v) {
-
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "0");
-                }
-                else{
-                    result.setText("0");
-                    flag = false;
-                }
+                onClickNumber(0);
             }
 
             public void onClickOne(View v) {
-
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "1");
-                }
-                else{
-                    result.setText("1");
-                    flag = false;
-                }
-
+                onClickNumber(1);
             }
 
             public void onClickTwo(View v) {
-
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "2");
-                }
-                else{
-                    result.setText("2");
-                    flag = false;
-                }
-
+                onClickNumber(2);
             }
+
             public void onClickThree(View v) {
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "3");
-                }
-                else{
-                    result.setText("3");
-                    flag = false;
-                }
-
+                onClickNumber(3);
             }
 
             public void onClickFour(View v) {
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "4");
-                }
-                else{
-                    result.setText("4");
-                    flag = false;
-                }
-
+                onClickNumber(4);
             }
 
             public void onClickFive(View v) {
-                Toast.makeText(this, negative.toString(), Toast.LENGTH_SHORT).show();
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "5");
-                }
-                else{
-                    result.setText("5");
-                    flag = false;
-                }
-
+                onClickNumber(5);
             }
             public void onClickSix(View v) {
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "6");
-                }
-                else{
-                    result.setText("6");
-                    flag = false;
-                }
-
+                onClickNumber(6);
             }
 
             public void onClickSeven(View v) {
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "7");
-                }
-                else{
-                    result.setText("7");
-                    flag = false;
-                }
-
+                onClickNumber(7);
             }
 
             public void onClickEight(View v) {
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "8");
-                }
-                else{
-                    result.setText("8");
-                    flag = false;
-                }
-
+                onClickNumber(8);
             }
             public void onClickNine(View v) {
-                Toast.makeText(this, negative.toString(), Toast.LENGTH_SHORT).show();
-                if(flag == false || negative == true){
-
-                    result.setText(result.getText() + "9");
-                }
-                else{
-                    result.setText("9");
-                    flag = false;
-                }
+                onClickNumber(9);
 
             }
 
