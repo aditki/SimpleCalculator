@@ -1,11 +1,16 @@
 package com.example.aditya.homework1;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 
@@ -43,16 +48,20 @@ public class MainActivity extends AppCompatActivity {
         minus = (Button) findViewById(R.id.btnSubtract);
         clear = (Button) findViewById(R.id.btnClear);
 
-
+        result.setText("0");
         for(int i = 0; i < operation.length; i++){
             operation[i] = 0;
 
         }
     }
             public void onClickNumber(int number){
-                if(flag == false || negative == true){
+                String resultValue = result.getText().toString();
 
-                    result.setText(result.getText() + Integer.toString(number));
+                if(resultValue.equals("Error")){
+                    resultValue = "0";
+                }
+                if(flag == false || negative == true){
+                    result.setText(resultValue + Integer.toString(number));
                 }
                 else{
                     result.setText(Integer.toString(number));
@@ -86,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClickFive(View v) {
                 onClickNumber(5);
             }
+
             public void onClickSix(View v) {
                 onClickNumber(6);
             }
@@ -97,10 +107,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClickEight(View v) {
                 onClickNumber(8);
             }
-            public void onClickNine(View v) {
-                onClickNumber(9);
 
-            }
+            public void onClickNine(View v) { onClickNumber(9); }
 
             public void onClickPoint(View v) {
                 if(result.getText().toString().contains(".")){
@@ -113,17 +121,65 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onClickEquals(View v) {
-                input2 = Double.parseDouble(result.getText().toString());
-                double resultValue = computeCalculation(input1, input2);
-                result.setText(String.valueOf(resultValue));
-                negative = false;
-                for (int i = 0; i < operation.length; i++){
-                    operation[i] = 0;
+
+                double resultValue = 0;
+                try {
+                    input2 = Double.parseDouble(result.getText().toString());
+                    resultValue = computeCalculation(input1, input2);
+                    int index = Double.toString(resultValue).indexOf(".");
+
+
+                    if (resultValue % 1 != 0) {
+                        if (Double.toString(resultValue).length() < 16) {
+                            settingText(resultValue);
+                        } else if (index > 14) {
+                            result.setText("Error");
+                        } else {
+                            BigDecimal bd = new BigDecimal(resultValue);
+                            bd = bd.setScale(14 - index, RoundingMode.HALF_UP);
+                            result.setText(bd.stripTrailingZeros().toString());
+                        }
+                    } else {
+
+                        if (Double.toString(resultValue).length() < 15) {
+                            settingText(resultValue);
+                        } else {
+                            Log.w("value", "in error");
+                            result.setText("Error");
+                        }
+                    }
+                    negative = false;
+                    for (int i = 0; i < operation.length; i++) {
+                        operation[i] = 0;
+
+                    }
+                }
+                catch (Exception e){
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                    input1 = 0.0;
+                    input2 = 0.0;
+                    flag = false;
+                    for (int i = 0; i < operation.length; i++){
+                        operation[i] = 0;
+
+                    }
+                    result.setText("");
 
                 }
 
             }
+
+            public void settingText(double resultValue){
+                if (resultValue % 1 == 0){
+                    result.setText(String.valueOf((int)resultValue));
+                }
+                else{
+                    result.setText(String.valueOf(resultValue));
+                }
+
+            }
             public void onClickDivide(View v) {
+                clearArray();
                 input1 = Double.parseDouble(result.getText().toString());
                 flag = true;
                 negative = false;
@@ -132,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onClickMultiply(View v) {
+                clearArray();
                 input1 = Double.parseDouble(result.getText().toString());
                 flag = true;
                 negative = false;
@@ -140,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onClickAdd(View v) {
+                clearArray();
                 input1 = Double.parseDouble(result.getText().toString());
                 flag = true;
                 negative = false;
@@ -169,8 +227,15 @@ public class MainActivity extends AppCompatActivity {
                     operation[i] = 0;
 
                 }
-                result.setText("");
+                result.setText("0");
 
+            }
+
+            public void clearArray(){
+                for (int i = 0; i < operation.length; i++){
+                    operation[i] = 0;
+
+                }
             }
 
 
@@ -178,24 +243,30 @@ public class MainActivity extends AppCompatActivity {
 
             private double computeCalculation(Double input1, Double input2) {
                 double resultValue = 0;
-                if(operation[0] == 1){
-                    if (input2 !=0){
-                    resultValue =  input1 / input2;
+                try {
+                    if (operation[0] == 1) {
+                        if (input2 != 0) {
+                            resultValue = input1 / input2;
+
+                        } else {
+                            Toast.makeText(this, "Cannot Divide by zero", Toast.LENGTH_SHORT).show();
+                            result.setText("");
+                        }
+
+                    } else if (operation[1] == 1) {
+                        resultValue = input1 * input2;
+                    } else if (operation[2] == 1) {
+                        resultValue = input1 - input2;
+
+                    } else if (operation[3] == 1) {
+                        resultValue = input1 + input2;
+
                     }
-                    else{
-                        Toast.makeText(this, "Cannot Divide by zero", Toast.LENGTH_SHORT).show();
-                        result.setText("");
-                    }
-                }
-                else if (operation[1] == 1){
-                    resultValue = input1 * input2;
-                }
-                else if(operation[2] == 1){
-                    resultValue = input1 - input2;
+
 
                 }
-                else if (operation[3] == 1){
-                    resultValue = input1 + input2;
+                catch (Exception e){
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
                 }
                 return resultValue;
             }
@@ -215,12 +286,6 @@ public class MainActivity extends AppCompatActivity {
 
             return result;
             }
-
-
-
-
-
-
 
 
 
